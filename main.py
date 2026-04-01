@@ -8,7 +8,7 @@ from oracle_extract import extract_from_oracle
 from gcs_load import upload_to_gcs, create_table_if_not_exists, get_secret
 from bigquery_load import load_to_bigquery
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def main():
     print("Banking Pipeline Started!")
@@ -17,8 +17,9 @@ def main():
     project_id = os.getenv("GCP_PROJECT", "hello-dev-491512")
     print(f"Project: {project_id}")
     
-    today = datetime.now().strftime("%Y-%m-%d")
-    print(f"Date: {today}")
+    # Show yesterday's date (what we're processing)
+    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    print(f"Processing Date: {yesterday}")
     
     print("\nStep 1: Extract from Oracle")
     print("-" * 30)
@@ -42,7 +43,7 @@ def main():
     
     print("\n" + "=" * 50)
     print("Pipeline Completed Successfully!")
-    print(f"Date: {today}")
+    print(f"Processed Date: {yesterday}")
     print(f"Project: {project_id}")
 
 if __name__ == "__main__":

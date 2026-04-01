@@ -2,11 +2,8 @@ name: Banking Pipeline
 
 on:
   schedule:
-    - cron: '58 8 * * *'
-  workflow_dispatch:
-  push:
-    branches:
-      - develop   # develop push అయినప్పుడు run అవుతుంది!
+    - cron: '30 19 * * *'   # 1:00 AM IST (19:30 UTC)
+  workflow_dispatch:         # Manual trigger
 
 jobs:
   run-pipeline:
