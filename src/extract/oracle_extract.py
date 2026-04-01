@@ -58,4 +58,5 @@ def extract_from_oracle():
     return filename
 
 if __name__ == "__main__":
+    print("extracting the data")
     extract_from_oracle()
