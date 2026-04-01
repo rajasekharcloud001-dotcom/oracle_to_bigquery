@@ -1,0 +1,21 @@
+name: Banking Pipeline
+
+on:
+  schedule:
+    - cron: '58 8 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - develop   # develop push అయినప్పుడు run అవుతుంది!
+
+jobs:
+  run-pipeline:
+    runs-on: self-hosted
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Banking Pipeline
+        env:
+          GCP_PROJECT: hello-dev-491512
+        run: python main.py
