@@ -10,21 +10,16 @@ def get_secret(secret_id, project_id):
     return response.payload.data.decode("UTF-8")
 
 def load_to_bigquery(gcs_path, project_id):
-    """GCS నుండి BigQuery కి Load చేయి"""
     
-    print("📤 Loading to BigQuery...")
+    print("Loading to BigQuery...")
     
-    # Secrets తీసుకో
     dataset = get_secret("dataset-name", project_id)
     table = get_secret("table-name", project_id)
     
-    # BigQuery client
     client = bigquery.Client(project=project_id)
     
-    # Table reference
     table_ref = f"{project_id}.{dataset}.{table}"
     
-    # Job config
     job_config = bigquery.LoadJobConfig(
         source_format=bigquery.SourceFormat.CSV,
         skip_leading_rows=1,
@@ -40,13 +35,12 @@ def load_to_bigquery(gcs_path, project_id):
         ]
     )
     
-    # Load చేయి
     load_job = client.load_table_from_uri(
         gcs_path, table_ref, job_config=job_config
     )
     load_job.result()
     
-    print(f"✅ Loaded to {table_ref}")
+    print(f"Loaded to {table_ref}")
 
 if __name__ == "__main__":
     project_id = os.getenv("GCP_PROJECT", "hello-dev-491512")

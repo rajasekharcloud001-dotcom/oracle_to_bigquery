@@ -18,26 +18,21 @@ def create_table_if_not_exists(project_id, dataset, table):
     
     try:
         client.get_table(table_ref)
-        print(f"✅ Table already exists: {table_ref}")
     except:
-        print(f"⚠️ Table not found! Creating...")
         schema = [
             bigquery.SchemaField("transaction_id", "STRING"),
             bigquery.SchemaField("account_number", "STRING"),
             bigquery.SchemaField("amount", "FLOAT"),
             bigquery.SchemaField("transaction_type", "STRING"),
-            bigquery.SchemaField("transaction_date", "DATE"),
+            bigquery.SchemaField("txn_date", "DATE"),
             bigquery.SchemaField("status", "STRING"),
             bigquery.SchemaField("bank_name", "STRING"),
         ]
         table_obj = bigquery.Table(table_ref, schema=schema)
         client.create_table(table_obj)
-        print(f"✅ Table created: {table_ref}")
 
 def upload_to_gcs(local_file, project_id):
     """Local file ని GCS కి upload చేయి"""
-    
-    print("📤 Uploading to GCS...")
     
     # Secret Manager నుండి bucket name తీసుకో
     bucket_name = get_secret("bucket-name", project_id)
@@ -54,7 +49,6 @@ def upload_to_gcs(local_file, project_id):
     blob.upload_from_filename(local_file)
     
     gcs_path = f"gs://{bucket_name}/{file_name}"
-    print(f"✅ Uploaded to {gcs_path}")
     
     return gcs_path
 
